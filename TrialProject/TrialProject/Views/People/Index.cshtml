@@ -1,0 +1,274 @@
+﻿@model IEnumerable<TrialProject.Person>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <form>
+                <div class="form-group control-group">
+                    <div class="controls">
+                        <label for="exampleFormControlInput1">Email address</label>
+                        <input class="form-control" type="text"
+                               pattern="a.*z"
+                               data-validation-pattern-message="Must start with 'a' and end with 'z'"
+                               name="some_field" />
+                    </div>
+
+                </div>
+
+                <div class="form-group">
+                    <label for="exampleFormControlSelect1">Example select</label>
+                    <select class="form-control" id="exampleFormControlSelect1">
+                        <option>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                        <option>5</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="exampleFormControlSelect2">Example multiple select</label>
+                    <select multiple class="form-control" id="exampleFormControlSelect2">
+                        <option>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                        <option>5</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="exampleFormControlTextarea1">Example textarea</label>
+                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<p>
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createPersonModal" data-whatever="">Create New</button>
+</p>
+
+@* Create Modal*@
+<div class="modal fade" id="createPersonModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">New Person</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form novalidate>
+                <div class="modal-body">
+
+                    <div class="form-group control-group">
+                        <div class="controls">
+                            <label for="person-name" class="col-form-label">Name:</label>
+                            <input type="text" ng-model="createPerson.Name" class="form-control" id="person-name" pattern="[A-Za-z]+[\s]+[A-Za-z]+" data-validation-pattern-message="Must contain only alphabets" required data-validation-required-message="Name is required" />
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+                        <label for="person-sex" class="col-form-label">Sex:</label>
+                        <input type="text" ng-model="createPerson.Sex" class="form-control" id="person-sex" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="person-dob" class="col-form-label">Date of Birth:</label>
+                        <input type="date" ng-model="createPerson.DOB" class="form-control" id="person-dob" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="person-add" class="col-form-label">Address:</label>
+                        <input type="text" ng-model="createPerson.Address" class="form-control" id="person-add" pattern="[A-Za-z]+[\s]+[A-Za-z]+" title="Please input valid address" data-validation-required-message="Name is required" required />
+                        @* <input type="text" ng-model="createPerson.Address" class="form-control" id="person-add" pattern="[a-zA-Z0-9]+[\s]+[A-Za-z]+" title="Please input valid address" required data-validation-required-message="address is required" />*@
+                    </div>
+                    <div class="form-group">
+                        <label for="person-money" class="col-form-label">Income:</label>
+                        <input type="number" step="0.01" ng-model="createPerson.Money" class="form-control" id="person-money" required />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary" ng-click="Add()">Create</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+@* Update *@
+<div class="modal fade" id="updatePersonModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Update Details</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form ngNativeValidate>
+                <div class="modal-body">
+
+                    <div class="form-group">
+                        <label for="person-name" class="col-form-label">Name:</label>
+                        <input type="text" class="form-control" ng-model="editPerson.Name" id="person-name" data-validation-uppercase-regex="([^a-z]*[A-Z]*)*" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="person-sex" class="col-form-label">Sex:</label>
+                        <input type="text" class="form-control" ng-model="editPerson.Sex" id="person-sex" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="person-dob" class="col-form-label">Date of Birth:</label>
+                        <input type="date" class="form-control" ng-model="editPerson.DOB" data-provide="datepicker" id="person-dob" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="person-add" class="col-form-label">Address:</label>
+                        <input type="text" class="form-control" ng-model="editPerson.Address" id="person-add" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="person-money" class="col-form-label">Income:</label>
+                        <input type="number" step="0.01" class="form-control" ng-model="editPerson.Money" id="person-money" required>
+                    </div>
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary" ng-click="UpdatePerson(editPerson.PersonID)" onClick="window.location.reload();">Update</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@**Detail*@
+<div class="modal fade" id="detailPersonModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">New Person</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="person-name" class="col-form-label">Name:</label>
+                        <label for="person-name" class="col-form-label">{{editPerson.Name}}</label>
+
+                    </div>
+                    <div class="form-group">
+                        <label for="person-sex" class="col-form-label">Sex:</label>
+                        <label for="person-sex" class="col-form-label">{{editPerson.Sex}}</label>
+                    </div>
+                    <div class="form-group">
+                        <label for="person-dob" class="col-form-label">Date of Birth:</label>
+                        <label for="person-dob" class="col-form-label">{{editPerson.DOB | date}}</label>
+                    </div>
+                    <div class="form-group">
+                        <label for="person-add" class="col-form-label">Address:</label>
+                        <label for="person-add" class="col-form-label">{{editPerson.Address}}</label>
+                    </div>
+                    <div class="form-group">
+                        <label for="person-money" class="col-form-label">Income:</label>
+                        <label for="person-money" class="col-form-label">{{editPerson.Money}}</label>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="Delete()">OK</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*Delete*@
+<div class="modal fade" id="deleteModal" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Are you sure you want to delete?</h4>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" ng-click="deletePerson(editPerson.PersonID)" onClick="window.location.reload();">Yes</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<table class="table" st-safe-src="Person" st-table="displayCollection">
+    <thead>
+        <tr>
+
+            <th st-sort="Name">Name</th>
+            <th st-sort="Sex">Gender</th>
+            <th st-sort="DOB">Date of Birth</th>
+            <th st-sort="Address">Address</th>
+            <th st-sort="Money">Income</th>
+            <th colspan="3"></th>
+        </tr>
+        <tr>
+            <th>
+                <input st-search="Name" placeholder="Search for Name" class="input-sm form-control" type="search" />
+            </th>
+            <th>
+                <input st-search="Sex" placeholder="Search for Gender" class="input-sm form-control" type="search" />
+            </th>
+            <th>
+                <input st-search="DOB" placeholder="Search for Date of Birth" class="input-sm form-control" type="date" />
+            </th>
+            <th>
+                <input st-search="Address" placeholder="Search for Address" class="input-sm form-control" type="search" />
+            </th>
+            <th>
+                <input st-search="Money" placeholder="Search for Income" class="input-sm form-control" type="search" />
+            </th>
+            <th colspan="3"></th>
+        </tr>
+
+    </thead>
+    <tr ng-repeat="x in displayCollection">
+        @*<td>{{ x.PersonID}}</td>*@
+        <td>{{ x.Name}}</td>
+        <td>{{ x.Sex }}</td>
+        <td>{{ x.DOB | date}}</td>
+        <td>{{ x.Address }}</td>
+        <td>{{ x.Money }}</td>
+        <td>
+            <button class="btn btn-default" data-toggle="modal" data-target="#updatePersonModal" ng-click="getRow(x)" type="button">
+                <span class="glyphicon glyphicon-edit"></span>
+            </button>
+        </td>
+        <td>
+            <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#detailPersonModal" ng-click="getRow(x)" typeof="button">
+                <span class="glyphicon glyphicon-eye-open"></span>
+            </button>
+        </td>
+        <td>
+            <button type="button" class="btn btn-default btn-sm">
+                <span class="glyphicon glyphicon-remove" data-toggle="modal" data-target="#deleteModal" ng-click="getRow(x)" type="button"></span>
+            </button>
+        </td>
+
+    </tr>
+    <tr>
+        <td colspan="5" class="text-center">
+            <div st-pagination="15" st-displayed-pages="7"></div>
+        </td>
+    </tr>
+</table>
+
+
+
+
+
